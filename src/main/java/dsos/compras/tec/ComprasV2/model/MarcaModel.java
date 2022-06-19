@@ -24,10 +24,6 @@ public class MarcaModel {
     public MarcaModel() {
     }
 
-    public MarcaModel(Integer idMarca, String nombreMarca) {
-        this.idMarca = idMarca;
-        this.nombreMarca = nombreMarca;
-    }
 
     public Integer getIdMarca() {
         return idMarca;

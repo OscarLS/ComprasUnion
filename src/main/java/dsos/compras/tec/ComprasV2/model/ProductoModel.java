@@ -1,5 +1,8 @@
 package dsos.compras.tec.ComprasV2.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 
 @Entity

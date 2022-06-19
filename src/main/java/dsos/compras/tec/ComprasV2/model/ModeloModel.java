@@ -25,11 +25,6 @@ public class ModeloModel {
     public ModeloModel() {
     }
 
-    public ModeloModel(Integer idModelo, String nombreModelo) {
-        this.idModelo = idModelo;
-        this.nombreModelo = nombreModelo;
-    }
-
     public Integer getIdModelo() {
         return idModelo;
     }
