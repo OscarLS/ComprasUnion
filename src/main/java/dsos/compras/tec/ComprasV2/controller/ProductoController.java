@@ -95,7 +95,7 @@ public class ProductoController {
      * @param idModelo
      * @return
      */
-    @GetMapping("/compras/marca/{idMarca}")
+    @GetMapping("/producto/marca/{idMarca}")
     public ResponseEntity<HashMap<String, Object>> getAllProductoMarca(@PathVariable String idMarca) {
         response = new HashMap<>();
         try {
@@ -119,7 +119,7 @@ public class ProductoController {
         }
     }
 
-    @GetMapping("/compras/MM/{idModelo}/{idMarca}")
+    @GetMapping("/producto/MM/{idModelo}/{idMarca}")
     public ResponseEntity<HashMap<String, Object>> getAllProductoMM(@PathVariable String idModelo, @PathVariable String idMarca) {
         response = new HashMap<>();
         try {

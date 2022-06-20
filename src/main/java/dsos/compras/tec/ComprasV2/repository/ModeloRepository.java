@@ -15,6 +15,6 @@ import org.springframework.data.jpa.repository.Query;
  * @author Oscar
  */
 public interface ModeloRepository extends JpaRepository<ModeloModel, Integer>  {
-    @Query("select s from ProductoModel s where s.marca = ?1")
+    @Query("select s from ModeloModel s where s.marca = ?1")
     Collection<ModeloModel> findByMarca(MarcaModel marca);
 }
