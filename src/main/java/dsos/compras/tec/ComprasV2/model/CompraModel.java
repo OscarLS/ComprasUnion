@@ -5,7 +5,9 @@
 package dsos.compras.tec.ComprasV2.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,12 +29,14 @@ public class CompraModel {
     private Double total;
 
     @Column(name = "fechaAdquirido", nullable = false)
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private LocalDate fechaAdquirido;
-
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    private LocalDateTime fechaAdquirido;
+/*
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "detalleCompras")
+    private List<DetalleCompraModel> detalleCompras;
+*/
     public CompraModel() {
-        
+
     }
 
     public Integer getIdCompra() {
@@ -51,12 +55,20 @@ public class CompraModel {
         this.total = total;
     }
 
-    public LocalDate getFechaAdquirido() {
+    public LocalDateTime getFechaAdquirido() {
         return fechaAdquirido;
     }
 
-    public void setFechaAdquirido(LocalDate fechaAdquirido) {
+    public void setFechaAdquirido(LocalDateTime fechaAdquirido) {
         this.fechaAdquirido = fechaAdquirido;
     }
+/*
+    public List<DetalleCompraModel> getDetalleCompras() {
+        return detalleCompras;
+    }
 
+    public void setDetalleCompras(List<DetalleCompraModel> detalleCompras) {
+        this.detalleCompras = detalleCompras;
+    }
+*/
 }

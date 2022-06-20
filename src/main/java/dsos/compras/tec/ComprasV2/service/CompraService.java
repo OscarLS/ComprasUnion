@@ -6,6 +6,7 @@ package dsos.compras.tec.ComprasV2.service;
 
 import dsos.compras.tec.ComprasV2.model.CompraModel;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -23,10 +24,11 @@ public interface CompraService {
     
     public void delete(Integer id);
 
-    //public void update(CompraModel compraUpdate, Integer id);
+    public void update(CompraModel compraUpdate, Integer id);
+    
     public Optional<CompraModel> getById(Integer id);
 
     public List<CompraModel> getAll();
 
-    public Optional<CompraModel> getByCompra(Double total,LocalDate fechaAdquirido);
+    public Optional<CompraModel> getByCompra(Double total,LocalDateTime fechaAdquirido);
 }

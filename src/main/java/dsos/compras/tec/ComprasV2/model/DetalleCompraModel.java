@@ -35,7 +35,6 @@ public class DetalleCompraModel {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn( name = "producto" , nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private ProductoModel producto;
 
     @Column(name = "cantidad", nullable = false, length = 10)

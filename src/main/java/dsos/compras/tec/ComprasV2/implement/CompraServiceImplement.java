@@ -8,6 +8,7 @@ import dsos.compras.tec.ComprasV2.model.CompraModel;
 import dsos.compras.tec.ComprasV2.repository.CompraRepository;
 import dsos.compras.tec.ComprasV2.service.CompraService;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.apache.commons.logging.Log;
@@ -46,16 +47,17 @@ public class CompraServiceImplement implements CompraService {
         compraRepository.deleteById(id);
     }
 
-    /*
-    @Override
+    
+   @Override
     public void update(CompraModel compraUpdate, Integer id) {
         CompraModel productoModel = compraRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("La compra no existe"));
-        productoModel.setFechaAdquirido(compraUpdate.getFechaAdquirido());
-        productoModel.s
-        compraRepository.save(productoModel);
+        if(compraUpdate.getTotal()!=null)
+        productoModel.setTotal(compraUpdate.getTotal());
+        
+        compraRepository.save(compraUpdate);
     }
-     */
+     
     @Override
     public Optional<CompraModel> getById(Integer id) {
         return compraRepository.findById(id);
@@ -66,7 +68,7 @@ public class CompraServiceImplement implements CompraService {
         return compraRepository.findAll();
     }
     @Override
-    public Optional<CompraModel> getByCompra(Double total,LocalDate fechaAdquirido) {
+    public Optional<CompraModel> getByCompra(Double total,LocalDateTime fechaAdquirido) {
         return compraRepository.findByCompra(total, fechaAdquirido);
     }
     
