@@ -64,7 +64,7 @@ public class ProductoController {
      * @param idModelo
      * @return
      */
-    @GetMapping("/producto/modelo/{idModelo}")
+    @GetMapping("/productos/modelo/{idModelo}")
     public ResponseEntity<HashMap<String, Object>> getAllProductoModel(@PathVariable String idModelo) {
         response = new HashMap<>();
         try {
@@ -95,7 +95,7 @@ public class ProductoController {
      * @param idModelo
      * @return
      */
-    @GetMapping("/producto/marca/{idMarca}")
+    @GetMapping("/productos/marca/{idMarca}")
     public ResponseEntity<HashMap<String, Object>> getAllProductoMarca(@PathVariable String idMarca) {
         response = new HashMap<>();
         try {
@@ -119,8 +119,8 @@ public class ProductoController {
         }
     }
 
-    @GetMapping("/producto/MM/{idModelo}/{idMarca}")
-    public ResponseEntity<HashMap<String, Object>> getAllProductoMM(@PathVariable String idModelo, @PathVariable String idMarca) {
+    @GetMapping("/productos/marca//{idMarca}/Modelo/{idModelo}")
+    public ResponseEntity<HashMap<String, Object>> getAllProductoMM(@PathVariable String idMarca,@PathVariable String idModelo) {
         response = new HashMap<>();
         try {
             Optional<ModeloModel> modeloModel = modeloService.getById(Integer.parseInt(idModelo));
@@ -144,7 +144,7 @@ public class ProductoController {
     }
 
     //Devuelve todos los productos
-    @GetMapping("/producto/")
+    @GetMapping("/productos/")
     public ResponseEntity<HashMap<String, Object>> getAll() {
         response = new HashMap<>();
         try {
@@ -160,7 +160,7 @@ public class ProductoController {
     }
 
     //Devuelve un producto por su id
-    @GetMapping("/producto/{id}")
+    @GetMapping("/productos/{id}")
     public ResponseEntity<HashMap<String, Object>> get(@PathVariable String id) {
         response = new HashMap<>();
         try {
@@ -183,7 +183,7 @@ public class ProductoController {
     }
 
     //Crea un producto
-    @PostMapping("/producto/")
+    @PostMapping("/productos/")
     public ResponseEntity<HashMap<String, Object>> post(@RequestBody ProductoModel producto, HttpServletRequest request) {
         response = new HashMap<>();
         try {
@@ -224,7 +224,7 @@ public class ProductoController {
 
     //Actualiza un producto (todos los atributos)
     @Transactional
-    @PutMapping("/producto/{id}")
+    @PutMapping("/productos/{id}")
     public ResponseEntity<HashMap<String, Object>> put(@RequestBody ProductoModel producto, @PathVariable String id, HttpServletRequest request) {
         response = new HashMap<>();
         try {
@@ -274,7 +274,7 @@ public class ProductoController {
 
     //Actualiza las existencias de un producto
     @Transactional
-    @PutMapping("/producto/vender/{id}/{unidades}")
+    @PutMapping("/productos/vender/{id}/{unidades}")
     public ResponseEntity<HashMap<String, Object>> vender(@PathVariable String id, @PathVariable String unidades, HttpServletRequest request) {
         response = new HashMap<>();
         try {
@@ -324,7 +324,7 @@ public class ProductoController {
 
     //Actualiza las existencias de un producto
     @Transactional
-    @PutMapping("/producto/devolver/{id}/{unidades}")
+    @PutMapping("/productos/devolver/{id}/{unidades}")
     public ResponseEntity<HashMap<String, Object>> devolver(@PathVariable String id, @PathVariable String unidades, HttpServletRequest request) {
         response = new HashMap<>();
         try {
@@ -367,7 +367,7 @@ public class ProductoController {
     }
 
     //Elimina un producto
-    @DeleteMapping("/producto/{id}")
+    @DeleteMapping("/productos/{id}")
     public ResponseEntity<HashMap<String, Object>> delete(@PathVariable String id, HttpServletRequest request) {
         response = new HashMap<>();
         try {
@@ -409,7 +409,7 @@ public class ProductoController {
      *
      * @return todas las marcas
      */
-    @GetMapping("/modelo/")
+    @GetMapping("/modelos/")
     public ResponseEntity<HashMap<String, Object>> getAllModelo() {
         response = new HashMap<>();
         try {
@@ -430,7 +430,7 @@ public class ProductoController {
      * @param id - id del modelo a buscar
      * @return ResponseEntity de exito o fracaso
      */
-    @GetMapping("/modelo/{id}")
+    @GetMapping("/modelos/{id}")
     public ResponseEntity<HashMap<String, Object>> getModelo(@PathVariable String id) {
         response = new HashMap<>();
         try {
@@ -459,7 +459,7 @@ public class ProductoController {
      * @param modelo - nuevo modelo a guardar
      * @return ResponseEntity de exito o fracaso
      */
-    @PostMapping("/modelo/")
+    @PostMapping("/modelos/")
     public ResponseEntity<HashMap<String, Object>> postModelo(@RequestBody ModeloModel modelo, HttpServletRequest request) {
         response = new HashMap<>();
         try {
@@ -503,7 +503,7 @@ public class ProductoController {
      * @return ResponseEntity caso de exito o fracaso
      */
     @Transactional
-    @PutMapping("/modelo/{id}")
+    @PutMapping("/modelos/{id}")
     public ResponseEntity<HashMap<String, Object>> putModelo(@RequestBody ModeloModel modelo, @PathVariable String id, HttpServletRequest request) {
         response = new HashMap<>();
         try {
@@ -552,7 +552,7 @@ public class ProductoController {
      * @param id - id del modelo a eliminar
      * @return ResponseEntity de exito o fracaso
      */
-    @DeleteMapping("/modelo/{id}")
+    @DeleteMapping("/modelos/{id}")
     public ResponseEntity<HashMap<String, Object>> deleteModelo(@PathVariable String id, HttpServletRequest request) {
         response = new HashMap<>();
         try {
@@ -587,7 +587,7 @@ public class ProductoController {
         }
     }
     
-    @GetMapping("/modelo/marca/{idMarca}")
+    @GetMapping("/modelos/marca/{idMarca}")
     public ResponseEntity<HashMap<String, Object>> getAllMarcaMarca(@PathVariable String idMarca) {
         response = new HashMap<>();
         try {
@@ -617,7 +617,7 @@ public class ProductoController {
      *
      * @return todas las marcas
      */
-    @GetMapping("/marca/")
+    @GetMapping("/marcas/")
     public ResponseEntity<HashMap<String, Object>> getAllMarca() {
         response = new HashMap<>();
         try {
@@ -638,7 +638,7 @@ public class ProductoController {
      * @param id - id de la marca a buscar
      * @return ResponseEntity de exito o fracaso
      */
-    @GetMapping("/marca/{id}")
+    @GetMapping("/marcas/{id}")
     public ResponseEntity<HashMap<String, Object>> getMarca(@PathVariable String id) {
         response = new HashMap<>();
         try {
@@ -667,7 +667,7 @@ public class ProductoController {
      * @param marca - nueva marca a guardar
      * @return ResponseEntity de exito o fracaso
      */
-    @PostMapping("/marca/")
+    @PostMapping("/marcas/")
     public ResponseEntity<HashMap<String, Object>> postMarca(@RequestBody MarcaModel marca, HttpServletRequest request) {
         response = new HashMap<>();
         try {
@@ -717,7 +717,7 @@ public class ProductoController {
      * @return ResponseEntity caso de exito o fracaso
      */
     @Transactional
-    @PutMapping("/marca/{id}")
+    @PutMapping("/marcas/{id}")
     public ResponseEntity<HashMap<String, Object>> putMarca(@RequestBody MarcaModel marca, @PathVariable String id, HttpServletRequest request) {
         response = new HashMap<>();
         try {
@@ -766,7 +766,7 @@ public class ProductoController {
      * @param id - id de la marca a eliminar
      * @return ResponseEntity de exito o fracaso
      */
-    @DeleteMapping("/marca/{id}")
+    @DeleteMapping("/marcas/{id}")
     public ResponseEntity<HashMap<String, Object>> deleteMarca(@PathVariable String id, HttpServletRequest request) {
         response = new HashMap<>();
         try {
@@ -803,7 +803,7 @@ public class ProductoController {
     }
 
 //Compras
-    @GetMapping("/compra/")
+    @GetMapping("/compras/")
     public ResponseEntity<HashMap<String, Object>> getAllCompras() {
         response = new HashMap<>();
         try {
@@ -897,7 +897,7 @@ public class ProductoController {
         }
     }
 
-    @GetMapping("/compra-detalle/{idCompra}")
+    @GetMapping("/compras-detalle/{idCompra}")
     public ResponseEntity<HashMap<String, Object>> getAllDetalle(@PathVariable String idCompra) {
 
         response = new HashMap<>();
