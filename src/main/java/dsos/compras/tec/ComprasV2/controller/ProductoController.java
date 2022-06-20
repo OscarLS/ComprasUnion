@@ -16,6 +16,8 @@ import dsos.compras.tec.ComprasV2.service.ProductoService;
 import dsos.compras.tec.ComprasV2.utils.CustomResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
@@ -73,10 +76,10 @@ public class ProductoController {
                 response.put("message", HttpStatus.OK.getReasonPhrase() + ": Productos encontrado");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
             response.put("data", null);
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": Sin productos");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": Sin productos");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
         } catch (Exception ex) {
             response.put("httpCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -105,10 +108,10 @@ public class ProductoController {
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
 
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
             response.put("data", null);
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": Sin productos");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": Sin productos");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             response.put("httpCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
@@ -129,10 +132,10 @@ public class ProductoController {
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
 
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
             response.put("data", null);
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": Sin productos");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": Sin productos");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             response.put("httpCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
@@ -168,10 +171,10 @@ public class ProductoController {
                 response.put("message", HttpStatus.OK.getReasonPhrase() + ": Producto encontrado");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
             response.put("data", null);
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": El producto no existe");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": El producto no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             response.put("httpCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
@@ -190,9 +193,9 @@ public class ProductoController {
             if (producto.getPrecioCompra() == null || producto.getStock() == null
                     || producto.getColor() == null || producto.getMarca() == null || producto.getTalla() == null || producto.getModelo() == null
                     || producto.getPrecioVenta() == null) {
-                response.put("httpCode", HttpStatus.BAD_REQUEST.value());
-                response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": Uno o más campos están vacíos");
-                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                response.put("httpCode", HttpStatus.NOT_FOUND.value());
+                response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": Uno o más campos están vacíos");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             } else {
                 productoService.createProducto(producto);
                 response.put("httpCode", HttpStatus.CREATED.value());
@@ -205,7 +208,7 @@ public class ProductoController {
             response.put("httpCode", HttpStatus.UNAUTHORIZED.value());
             response.put("data", ex.toJSON());
             response.put("message", HttpStatus.UNAUTHORIZED.getReasonPhrase());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
         } catch (ExternalMicroserviceException ex) {
             response.put("httpCode", HttpStatus.SERVICE_UNAVAILABLE.value());
@@ -236,8 +239,8 @@ public class ProductoController {
                         && producto.getTalla() == null && producto.getModelo() == null
                         && producto.getPrecioVenta() == null) {
                     response.put("httpCode", 400);
-                    response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": Uno o más campos están vacíos");
-                    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                    response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": Uno o más campos están vacíos");
+                    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
                 } else {
                     productoService.update(producto, Integer.parseInt(id));
                     response.put("httpCode", HttpStatus.OK.value());
@@ -246,15 +249,15 @@ public class ProductoController {
                     return new ResponseEntity<>(response, HttpStatus.OK);
                 }
             }
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
             response.put("data", null);
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": El producto no existe");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": El producto no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (UnauthorizedException ex) {
             response.put("httpCode", HttpStatus.UNAUTHORIZED.value());
             response.put("data", ex.toJSON());
             response.put("message", HttpStatus.UNAUTHORIZED.getReasonPhrase());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
         } catch (ExternalMicroserviceException ex) {
             response.put("httpCode", HttpStatus.SERVICE_UNAVAILABLE.value());
@@ -283,8 +286,8 @@ public class ProductoController {
                 //if stock is not enough
                 if (producto.getStock() < Integer.parseInt(unidades)) {
                     response.put("httpCode", 400);
-                    response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": No hay suficiente stock");
-                    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                    response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": No hay suficiente stock");
+                    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
                 }
                 //if stock is enough, update stock
                 productoService.vender(Integer.parseInt(id), Integer.parseInt(unidades));
@@ -298,14 +301,14 @@ public class ProductoController {
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
             //If producto does not exist
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": El producto no existe");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": El producto no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (UnauthorizedException ex) {
             response.put("httpCode", HttpStatus.UNAUTHORIZED.value());
             response.put("data", ex.toJSON());
             response.put("message", HttpStatus.UNAUTHORIZED.getReasonPhrase());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
         } catch (ExternalMicroserviceException ex) {
             response.put("httpCode", HttpStatus.SERVICE_UNAVAILABLE.value());
@@ -342,14 +345,14 @@ public class ProductoController {
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
             //If producto does not exist
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": El producto no existe");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": El producto no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (UnauthorizedException ex) {
             response.put("httpCode", HttpStatus.UNAUTHORIZED.value());
             response.put("data", ex.toJSON());
             response.put("message", HttpStatus.UNAUTHORIZED.getReasonPhrase());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
         } catch (ExternalMicroserviceException ex) {
             response.put("httpCode", HttpStatus.SERVICE_UNAVAILABLE.value());
@@ -378,15 +381,15 @@ public class ProductoController {
                 response.put("message", HttpStatus.OK.getReasonPhrase() + ": El producto se ha eliminado correctamente");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
             response.put("data", null);
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": El producto no existe");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": El producto no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (UnauthorizedException ex) {
             response.put("httpCode", HttpStatus.UNAUTHORIZED.value());
             response.put("data", ex.toJSON());
             response.put("message", HttpStatus.UNAUTHORIZED.getReasonPhrase());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
         } catch (ExternalMicroserviceException ex) {
             response.put("httpCode", HttpStatus.SERVICE_UNAVAILABLE.value());
@@ -439,10 +442,10 @@ public class ProductoController {
                 response.put("message", HttpStatus.OK.getReasonPhrase() + ": Modelo encontrado");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
             response.put("data", null);
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": El modelo no existe");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": El modelo no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             response.put("httpCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
@@ -462,9 +465,9 @@ public class ProductoController {
         try {
             authentication.auth(request);
             if (modelo.getNombreModelo() == null) {
-                response.put("httpCode", HttpStatus.BAD_REQUEST.value());
-                response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": Uno o más campos están vacíos");
-                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                response.put("httpCode", HttpStatus.NOT_FOUND.value());
+                response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": Uno o más campos están vacíos");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             } else {
                 modeloService.createModelo(modelo);
                 response.put("httpCode", HttpStatus.CREATED.value());
@@ -476,7 +479,7 @@ public class ProductoController {
             response.put("httpCode", HttpStatus.UNAUTHORIZED.value());
             response.put("data", ex.toJSON());
             response.put("message", HttpStatus.UNAUTHORIZED.getReasonPhrase());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
         } catch (ExternalMicroserviceException ex) {
             response.put("httpCode", HttpStatus.SERVICE_UNAVAILABLE.value());
@@ -509,9 +512,9 @@ public class ProductoController {
             Optional<ModeloModel> modeloModel = modeloService.getById(Integer.parseInt(id));
             if (modeloModel.isPresent()) {
                 if (modelo.getNombreModelo() == null) {
-                    response.put("httpCode", HttpStatus.BAD_REQUEST.value());
-                    response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": Uno o más campos están vacíos");
-                    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                    response.put("httpCode", HttpStatus.NOT_FOUND.value());
+                    response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": Uno o más campos están vacíos");
+                    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
                 } else {
                     modeloService.update(modelo, Integer.parseInt(id));
                     response.put("httpCode", HttpStatus.OK.value());
@@ -520,15 +523,15 @@ public class ProductoController {
                     return new ResponseEntity<>(response, HttpStatus.OK);
                 }
             }
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
             response.put("data", null);
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": El modelo no existe");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": El modelo no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (UnauthorizedException ex) {
             response.put("httpCode", HttpStatus.UNAUTHORIZED.value());
             response.put("data", ex.toJSON());
             response.put("message", HttpStatus.UNAUTHORIZED.getReasonPhrase());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
         } catch (ExternalMicroserviceException ex) {
             response.put("httpCode", HttpStatus.SERVICE_UNAVAILABLE.value());
@@ -562,15 +565,15 @@ public class ProductoController {
                 response.put("message", HttpStatus.OK.getReasonPhrase() + ": El modelo se ha eliminado correctamente");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
             response.put("data", null);
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": El modelo no existe");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": El modelo no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (UnauthorizedException ex) {
             response.put("httpCode", HttpStatus.UNAUTHORIZED.value());
             response.put("data", ex.toJSON());
             response.put("message", HttpStatus.UNAUTHORIZED.getReasonPhrase());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
         } catch (ExternalMicroserviceException ex) {
             response.put("httpCode", HttpStatus.SERVICE_UNAVAILABLE.value());
@@ -623,10 +626,10 @@ public class ProductoController {
                 response.put("message", HttpStatus.OK.getReasonPhrase() + ": Marca encontrada");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
             response.put("data", null);
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": La marca no existe");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": La marca no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             response.put("httpCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
@@ -649,8 +652,8 @@ public class ProductoController {
             if (!marcaModel.isPresent()) {
                 if (marca.getNombreMarca() == null) {
                     response.put("httpCode", 400);
-                    response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": Uno o más campos están vacíos");
-                    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                    response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": Uno o más campos están vacíos");
+                    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
                 } else {
                     marcaService.createMarca(marca);
                     response.put("httpCode", HttpStatus.CREATED.value());
@@ -659,15 +662,15 @@ public class ProductoController {
                     return new ResponseEntity<>(response, HttpStatus.CREATED);
                 }
             }
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
             response.put("data", null);
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": La marca ya esta registrada");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": La marca ya esta registrada");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (UnauthorizedException ex) {
             response.put("httpCode", HttpStatus.UNAUTHORIZED.value());
             response.put("data", ex.toJSON());
             response.put("message", HttpStatus.UNAUTHORIZED.getReasonPhrase());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
         } catch (ExternalMicroserviceException ex) {
             response.put("httpCode", HttpStatus.SERVICE_UNAVAILABLE.value());
@@ -701,8 +704,8 @@ public class ProductoController {
                 //check if fields are not null
                 if (marca.getNombreMarca() == null) {
                     response.put("httpCode", 400);
-                    response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": Uno o más campos están vacíos");
-                    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                    response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": Uno o más campos están vacíos");
+                    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
                 } else {
                     marcaService.update(marca, Integer.parseInt(id));
                     response.put("httpCode", HttpStatus.OK.value());
@@ -711,15 +714,15 @@ public class ProductoController {
                     return new ResponseEntity<>(response, HttpStatus.OK);
                 }
             }
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
             response.put("data", null);
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": La marca no existe");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": La marca no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (UnauthorizedException ex) {
             response.put("httpCode", HttpStatus.UNAUTHORIZED.value());
             response.put("data", ex.toJSON());
             response.put("message", HttpStatus.UNAUTHORIZED.getReasonPhrase());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
         } catch (ExternalMicroserviceException ex) {
             response.put("httpCode", HttpStatus.SERVICE_UNAVAILABLE.value());
@@ -752,15 +755,16 @@ public class ProductoController {
                 response.put("message", HttpStatus.OK.getReasonPhrase() + ": La marca se ha eliminado correctamente");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
             response.put("data", null);
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": La marca no existe");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": La marca no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+
         } catch (UnauthorizedException ex) {
             response.put("httpCode", HttpStatus.UNAUTHORIZED.value());
             response.put("data", ex.toJSON());
             response.put("message", HttpStatus.UNAUTHORIZED.getReasonPhrase());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
         } catch (ExternalMicroserviceException ex) {
             response.put("httpCode", HttpStatus.SERVICE_UNAVAILABLE.value());
@@ -815,7 +819,6 @@ public class ProductoController {
                         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
                     } else {
                         cantidad = productoN.getStock();
-                        //compraService.update(compra, cantidad);
                         compra.setTotal(compra.getTotal() + (productoN.getStock() * productoN.getPrecioCompra()));
                         Optional<ProductoModel> productoModel = productoService.getByDatos(productoN.getTalla(), productoN.getColor(), productoN.getModelo(), productoN.getMarca());
                         if (!productoModel.isPresent()) {
@@ -836,21 +839,27 @@ public class ProductoController {
 
                 }
                 compraService.update(compra, compraRt.get().getIdCompra());
-                List<DetalleCompraModel> dc = (List) detalleCompraService.getAllCompra(compraRt.get());
-                response.put("httpCode", HttpStatus.CREATED.value());
-                response.put("data", dc);
+                Collection dc = detalleCompraService.getAllCompra(compraRt.get());
+
+                List<Object> salida = new ArrayList<>();
+                salida.add(compraRt.get());
+                salida.add(dc);
+
+                response.put("httpCode", HttpStatus.OK.value());
+                response.put("data", salida);
                 response.put("message", HttpStatus.CREATED.getReasonPhrase() + ": La compra se ha creado correctamente");
                 return new ResponseEntity<>(response, HttpStatus.CREATED);
 
             }
             response.put("httpCode", 400);
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": No ingreso ningun producto");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": No ingreso ningun producto");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+
         } catch (UnauthorizedException ex) {
             response.put("httpCode", HttpStatus.UNAUTHORIZED.value());
             response.put("data", ex.toJSON());
             response.put("message", HttpStatus.UNAUTHORIZED.getReasonPhrase());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
         } catch (ExternalMicroserviceException ex) {
             response.put("httpCode", HttpStatus.SERVICE_UNAVAILABLE.value());
@@ -871,21 +880,26 @@ public class ProductoController {
         try {
             Optional<CompraModel> compraRt = compraService.getById(Integer.parseInt(idCompra));
             if (compraRt.isPresent()) {
-                List<DetalleCompraModel> dc = (List) detalleCompraService.getAllCompra(compraRt.get());
-                if (!dc.isEmpty()) {
-                    response.put("httpCode", HttpStatus.CREATED.value());
-                    response.put("data", dc);
-                    response.put("message", HttpStatus.CREATED.getReasonPhrase() + ": Lista compra");
-                    return new ResponseEntity<>(response, HttpStatus.CREATED);
-                }
+
+                Collection dc = detalleCompraService.getAllCompra(compraRt.get());
+
+                List<Object> salida = new ArrayList<>();
+                salida.add(compraRt.get());
+                salida.add(dc);
+
+                response.put("httpCode", HttpStatus.OK.value());
+                response.put("data", salida);
+                response.put("message", HttpStatus.OK.getReasonPhrase() + ": Lista compra");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+
             }
-            response.put("httpCode", HttpStatus.BAD_REQUEST.value());
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
             response.put("data", null);
-            response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": La compra no existe");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": La compra no existe");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
             response.put("httpCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+            response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase() + "Eror detalle");
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

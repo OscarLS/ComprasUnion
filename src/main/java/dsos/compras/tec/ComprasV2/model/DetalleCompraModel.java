@@ -1,5 +1,6 @@
 package dsos.compras.tec.ComprasV2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,6 +31,7 @@ public class DetalleCompraModel {
     private Integer idDetalleCompra;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnore
     @JoinColumn(name = "compra", nullable = false)
     private CompraModel compra;
 
