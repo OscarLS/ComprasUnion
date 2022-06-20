@@ -22,6 +22,10 @@ public class ModeloModel {
     @Column(name = "nombreModelo", nullable = false, length = 20)
     private String nombreModelo;
 
+    @ManyToOne
+    @JoinColumn(name = "marca", nullable = false)
+    private MarcaModel marca;
+
     public ModeloModel() {
     }
 
@@ -41,4 +45,13 @@ public class ModeloModel {
         this.nombreModelo = numeroModelo;
     }
 
+    public MarcaModel getMarca() {
+        return marca;
+    }
+
+    public void setMarca(MarcaModel marca) {
+        this.marca = marca;
+    }
+
+    
 }

@@ -4,10 +4,12 @@
  */
 package dsos.compras.tec.ComprasV2.implement;
 
+import dsos.compras.tec.ComprasV2.model.MarcaModel;
 import dsos.compras.tec.ComprasV2.model.ModeloModel;
 import dsos.compras.tec.ComprasV2.repository.ModeloRepository;
 
 import dsos.compras.tec.ComprasV2.service.ModeloService;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import org.apache.commons.logging.Log;
@@ -61,5 +63,10 @@ public class ModeloServiceImplement implements ModeloService  {
     @Override
     public List<ModeloModel> getAll() {
         return modeloRepository.findAll();
+    }
+    
+    @Override
+    public Collection<ModeloModel> getAllMarca(MarcaModel marca) {
+        return modeloRepository.findByMarca(marca);
     }
 }

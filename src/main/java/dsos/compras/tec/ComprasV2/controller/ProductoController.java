@@ -586,6 +586,30 @@ public class ProductoController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    @GetMapping("/modelo/marca/{idMarca}")
+    public ResponseEntity<HashMap<String, Object>> getAllMarcaMarca(@PathVariable String idMarca) {
+        response = new HashMap<>();
+        try {
+            Optional<MarcaModel> marcaModel = marcaService.getById(Integer.parseInt(idMarca));
+            if (marcaModel.isPresent()) {
+
+                response.put("httpCode", HttpStatus.OK.value());
+                response.put("data", modeloService.getAllMarca(marcaModel.get()));
+                response.put("message", HttpStatus.OK.getReasonPhrase() + ": modelos encontrados");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+
+            response.put("httpCode", HttpStatus.NOT_FOUND.value());
+            response.put("data", null);
+            response.put("message", HttpStatus.NOT_FOUND.getReasonPhrase() + ": Sin modelo");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        } catch (Exception ex) {
+            response.put("httpCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 //MARCA
 
     /**

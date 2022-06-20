@@ -4,7 +4,9 @@
  */
 package dsos.compras.tec.ComprasV2.service;
 
+import dsos.compras.tec.ComprasV2.model.MarcaModel;
 import dsos.compras.tec.ComprasV2.model.ModeloModel;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -28,5 +30,6 @@ public interface ModeloService {
     public Optional<ModeloModel> getById(Integer id);
 
     public List<ModeloModel> getAll();
-
+    
+   public Collection<ModeloModel> getAllMarca(MarcaModel marca);
 }
