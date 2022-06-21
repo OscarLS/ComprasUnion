@@ -13,32 +13,39 @@ import javax.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- *
+ * Clase de la tabla CompraModel
  * @author Oscar
  */
 @Entity
 @Table(name = "CompraModel")
 public class CompraModel {
 
+    //Varibles de la clase
+    
+    //Id de la tabla compra 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idCompra", nullable = false, updatable = false, length = 10)
     private Integer idCompra;
 
+    //total de la compra 
     @Column(name = "total", nullable = false, length = 10, precision = 2)
     private Double total;
 
+    //Fecha de la compra 
     @Column(name = "fechaAdquirido", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime fechaAdquirido;
-/*
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "detalleCompras")
-    private List<DetalleCompraModel> detalleCompras;
-*/
+    
+    
+    /**
+     * Constructor de la clase compra 
+     */
     public CompraModel() {
-
     }
-
+     
+    //Get y Set de las variables de la clase 
+    
     public Integer getIdCompra() {
         return idCompra;
     }
@@ -62,13 +69,4 @@ public class CompraModel {
     public void setFechaAdquirido(LocalDateTime fechaAdquirido) {
         this.fechaAdquirido = fechaAdquirido;
     }
-/*
-    public List<DetalleCompraModel> getDetalleCompras() {
-        return detalleCompras;
-    }
-
-    public void setDetalleCompras(List<DetalleCompraModel> detalleCompras) {
-        this.detalleCompras = detalleCompras;
-    }
-*/
 }

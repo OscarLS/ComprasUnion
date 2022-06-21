@@ -33,11 +33,17 @@ import java.util.Set;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Esta clase es el controlador de todo el programa
+ *
+ * @author Oscar
+ */
 @RestController
 @RequestMapping("api/v1")
 @CrossOrigin(origins = "*")
 public class ProductoController {
 
+    //Varibles de la clase 
     HashMap<String, Object> response;
 
     @Autowired
@@ -59,9 +65,10 @@ public class ProductoController {
     private Authentication authentication;
 
     /**
-     * Obtiene todos los modelos con el id indicado
+     * Método GET que devuelve todos los productos que tengan un modelo con el
+     * id (idModelo)
      *
-     * @param idModelo
+     * @param idModelo Id del modelo a buscar
      * @return
      */
     @GetMapping("/productos/modelo/{idModelo}")
@@ -69,6 +76,7 @@ public class ProductoController {
         response = new HashMap<>();
         try {
             Optional<ModeloModel> modeloModel = modeloService.getById(Integer.parseInt(idModelo));
+             //modeloService.getById(Integer.parseInt(idModelo)).
             if (modeloModel.isPresent()) {
 
                 response.put("httpCode", HttpStatus.OK.value());
@@ -86,13 +94,13 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-    }
+    }//Cierre del método
 
     /**
-     * Ontiene todos los modelos con el id indicado
+     * Método GET que devuelve todos los productos que tengan una marca con el
+     * id (idMarca)
      *
-     * @param idModelo
+     * @param idMarca Id de la marca buscar
      * @return
      */
     @GetMapping("/productos/marca/{idMarca}")
@@ -117,10 +125,18 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
+    /**
+     * Método GET que devuelve todos los productos que tengan una marca con el
+     * id (idMarca) y un modelo con un id (idModelo)
+     *
+     * @param idMarca Id de la marca buscar
+     * @param idModelo Id del modelo buscar
+     * @return
+     */
     @GetMapping("/productos/marca//{idMarca}/Modelo/{idModelo}")
-    public ResponseEntity<HashMap<String, Object>> getAllProductoMM(@PathVariable String idMarca,@PathVariable String idModelo) {
+    public ResponseEntity<HashMap<String, Object>> getAllProductoMM(@PathVariable String idMarca, @PathVariable String idModelo) {
         response = new HashMap<>();
         try {
             Optional<ModeloModel> modeloModel = modeloService.getById(Integer.parseInt(idModelo));
@@ -141,9 +157,13 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
-    //Devuelve todos los productos
+    /**
+     * Método GET que devuelve todos los productos
+     *
+     * @return
+     */
     @GetMapping("/productos/")
     public ResponseEntity<HashMap<String, Object>> getAll() {
         response = new HashMap<>();
@@ -157,9 +177,14 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
-    //Devuelve un producto por su id
+    /**
+     * Método GET que devuelve un producto con el id especificado (id)
+     *
+     * @param id Id del producto a buscar
+     * @return
+     */
     @GetMapping("/productos/{id}")
     public ResponseEntity<HashMap<String, Object>> get(@PathVariable String id) {
         response = new HashMap<>();
@@ -180,9 +205,15 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
-    //Crea un producto
+    /**
+     * Id del producto a buscar
+     *
+     * @param producto Producto (ProductoModel) a guardar
+     * @param request Token de autenticación
+     * @return
+     */
     @PostMapping("/productos/")
     public ResponseEntity<HashMap<String, Object>> post(@RequestBody ProductoModel producto, HttpServletRequest request) {
         response = new HashMap<>();
@@ -220,9 +251,17 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
-    //Actualiza un producto (todos los atributos)
+    /**
+     * Método PUT actualiza los datos de un producto
+     *
+     * @param producto Producto (ProductoModel) con los datos del producto a
+     * actualizar
+     * @param id Id del producto a actualizar
+     * @param request Token de autenticación
+     * @return
+     */
     @Transactional
     @PutMapping("/productos/{id}")
     public ResponseEntity<HashMap<String, Object>> put(@RequestBody ProductoModel producto, @PathVariable String id, HttpServletRequest request) {
@@ -244,7 +283,7 @@ public class ProductoController {
                 } else {
                     productoService.update(producto, Integer.parseInt(id));
                     response.put("httpCode", HttpStatus.OK.value());
-                    response.put("data", producto);
+                    response.put("data", productoService.getById(Integer.parseInt(id)).get());
                     response.put("message", HttpStatus.OK.getReasonPhrase() + ": El producto se ha actualizado correctamente");
                     return new ResponseEntity<>(response, HttpStatus.OK);
                 }
@@ -269,10 +308,17 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }//Cierre del método
 
-    }
-
-    //Actualiza las existencias de un producto
+    /**
+     * Método PUT actualiza el stock de un producto de acuerdo a las unidades
+     * vendidas del producto
+     *
+     * @param id Id del producto a actualizar
+     * @param unidades Id del producto a actualizar
+     * @param request Token de autenticación
+     * @return
+     */
     @Transactional
     @PutMapping("/productos/vender/{id}/{unidades}")
     public ResponseEntity<HashMap<String, Object>> vender(@PathVariable String id, @PathVariable String unidades, HttpServletRequest request) {
@@ -320,9 +366,17 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
-    //Actualiza las existencias de un producto
+    /**
+     * Método PUT actualiza el stock de un producto de acuerdo a las unidades
+     * devueltas del producto
+     *
+     * @param id Id del producto a actualizar
+     * @param unidades Unidades compradas
+     * @param request Token de autenticación
+     * @return
+     */
     @Transactional
     @PutMapping("/productos/devolver/{id}/{unidades}")
     public ResponseEntity<HashMap<String, Object>> devolver(@PathVariable String id, @PathVariable String unidades, HttpServletRequest request) {
@@ -364,9 +418,15 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
-    //Elimina un producto
+    /**
+     * Método DELETE borra un producto de acuerdo al id dado (id)
+     *
+     * @param id Id del producto a eliminar
+     * @param request Método DELETE borra un producto de acuerdo al id dado (id)
+     * @return
+     */
     @DeleteMapping("/productos/{id}")
     public ResponseEntity<HashMap<String, Object>> delete(@PathVariable String id, HttpServletRequest request) {
         response = new HashMap<>();
@@ -401,13 +461,13 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
-//MODELOS
+    //MODELO
     /**
-     * Busca todos los modelos en la base de datos
+     * Método GET obtiene todos los modelos
      *
-     * @return todas las marcas
+     * @return
      */
     @GetMapping("/modelos/")
     public ResponseEntity<HashMap<String, Object>> getAllModelo() {
@@ -422,13 +482,13 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
     /**
-     * Busca un modelo en la base de datos
+     * Método GET obtiene el modelo con el id dado (id)
      *
-     * @param id - id del modelo a buscar
-     * @return ResponseEntity de exito o fracaso
+     * @param id Id del modelo a buscar
+     * @return
      */
     @GetMapping("/modelos/{id}")
     public ResponseEntity<HashMap<String, Object>> getModelo(@PathVariable String id) {
@@ -451,13 +511,14 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
     /**
-     * Crea un nuevo modelo y lo guarda en la base de datos
+     * Método POST guarda un modelo
      *
-     * @param modelo - nuevo modelo a guardar
-     * @return ResponseEntity de exito o fracaso
+     * @param modelo Modelo a guardar
+     * @param request Token de autenticación
+     * @return
      */
     @PostMapping("/modelos/")
     public ResponseEntity<HashMap<String, Object>> postModelo(@RequestBody ModeloModel modelo, HttpServletRequest request) {
@@ -491,16 +552,15 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }//Cierre del método
 
-    }
-
-    //Actualiza un producto (todos los atributos)
     /**
-     * Actuliza un modelo
+     * Método PUT actualiza los datos de un modelo
      *
-     * @param modelo - datos modelo a actulizar
-     * @param id - id del producto a actulizar
-     * @return ResponseEntity caso de exito o fracaso
+     * @param modelo Modelo con los datos a actualizar
+     * @param id Id del modelo a actualizar
+     * @param request Token de autenticación
+     * @return
      */
     @Transactional
     @PutMapping("/modelos/{id}")
@@ -543,14 +603,14 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-    }
+    }//Cierre del método
 
     /**
-     * elimina un modelo
+     * Método DELETE borra un modelo con el id dado
      *
-     * @param id - id del modelo a eliminar
-     * @return ResponseEntity de exito o fracaso
+     * @param id Id del modelo a borrar
+     * @param request Id del modelo a borrar
+     * @return
      */
     @DeleteMapping("/modelos/{id}")
     public ResponseEntity<HashMap<String, Object>> deleteModelo(@PathVariable String id, HttpServletRequest request) {
@@ -585,8 +645,14 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-    
+    }//Cierre del método
+
+    /**
+     * Método GET obtiene todos los modelos que tengan una marca con el id dado
+     *
+     * @param idMarca Id de la marca a buscar
+     * @return
+     */
     @GetMapping("/modelos/marca/{idMarca}")
     public ResponseEntity<HashMap<String, Object>> getAllMarcaMarca(@PathVariable String idMarca) {
         response = new HashMap<>();
@@ -609,13 +675,13 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-//MARCA
+    }//Cierre del método
 
+    //MARCA
     /**
-     * Busca todas las marcas en la base de datos
+     * Método GET obtiene todas las marcas
      *
-     * @return todas las marcas
+     * @return ResponseEntity con todas las marcas
      */
     @GetMapping("/marcas/")
     public ResponseEntity<HashMap<String, Object>> getAllMarca() {
@@ -630,13 +696,13 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
     /**
-     * Busca una marca en la base de datos
+     * Método GET obtiene la marca con el id dado
      *
-     * @param id - id de la marca a buscar
-     * @return ResponseEntity de exito o fracaso
+     * @param id Id de la marca
+     * @return
      */
     @GetMapping("/marcas/{id}")
     public ResponseEntity<HashMap<String, Object>> getMarca(@PathVariable String id) {
@@ -659,13 +725,14 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
     /**
-     * Crea una nueva marca y la guarda en la base de datos
+     * Método POST guarda una marca
      *
-     * @param marca - nueva marca a guardar
-     * @return ResponseEntity de exito o fracaso
+     * @param marca Marca a guardar
+     * @param request Token de autenticación
+     * @return
      */
     @PostMapping("/marcas/")
     public ResponseEntity<HashMap<String, Object>> postMarca(@RequestBody MarcaModel marca, HttpServletRequest request) {
@@ -706,15 +773,15 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
-    //Actualiza un producto (todos los atributos)
     /**
-     * Actuliza una marca
+     * Método PUT actualiza los datos de una marca
      *
-     * @param marca - datos producto a actulizar
-     * @param id - id del producto a actulizar
-     * @return ResponseEntity caso de exito o fracaso
+     * @param marca Marca con los datos a aguardar
+     * @param id Id de la marca a actualizar
+     * @param request Token de autenticación
+     * @return
      */
     @Transactional
     @PutMapping("/marcas/{id}")
@@ -758,13 +825,14 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
     /**
-     * elimina una marca
+     * Método DELETE borra una marca con el id dado (id)
      *
-     * @param id - id de la marca a eliminar
-     * @return ResponseEntity de exito o fracaso
+     * @param id Id de la marca a borrar
+     * @param request Token de autenticación
+     * @return
      */
     @DeleteMapping("/marcas/{id}")
     public ResponseEntity<HashMap<String, Object>> deleteMarca(@PathVariable String id, HttpServletRequest request) {
@@ -800,9 +868,13 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
-//Compras
+    /**
+     * Método GET obtiene todas las marcas
+     *
+     * @return
+     */
     @GetMapping("/compras/")
     public ResponseEntity<HashMap<String, Object>> getAllCompras() {
         response = new HashMap<>();
@@ -816,8 +888,15 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
+    /**
+     * Método POST crea una compra y los detalles compras de los productos dados
+     *
+     * @param productosLista Lista con los productos que se compraron
+     * @param request Token de autenticación
+     * @return
+     */
     @PostMapping("/compras/new/")
     public ResponseEntity<HashMap<String, Object>> postCompras2(@RequestBody List<ProductoModel> productosLista, HttpServletRequest request) {
         response = new HashMap<>();
@@ -838,6 +917,7 @@ public class ProductoController {
                             || productoN.getColor() == null || productoN.getMarca() == null
                             || productoN.getTalla() == null || productoN.getModelo() == null
                             || productoN.getPrecioVenta() == null) {
+                        compraService.delete(compraRt.get().getIdCompra());
                         response.put("httpCode", 400);
                         response.put("message", HttpStatus.BAD_REQUEST.getReasonPhrase() + ": Uno o más campos están vacíos");
                         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -895,8 +975,15 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }//Cierre del método
 
+    /**
+     * Método GET obtiene todos los detalles compras que pertenecen a una compra
+     * con el id dado(idCompra)
+     *
+     * @param idCompra Id de la compra
+     * @return
+     */
     @GetMapping("/compras-detalle/{idCompra}")
     public ResponseEntity<HashMap<String, Object>> getAllDetalle(@PathVariable String idCompra) {
 
@@ -926,6 +1013,5 @@ public class ProductoController {
             response.put("message", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase() + "Eror detalle");
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-}
+    }//Cierre del método
+}//Cierre de la clase 

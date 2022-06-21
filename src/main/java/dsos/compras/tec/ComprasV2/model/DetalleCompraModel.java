@@ -17,33 +17,45 @@ import org.hibernate.annotations.OnDeleteAction;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
 /**
- *
+ * Clase de la tabla DetalleCompraModel
  * @author Oscar
  */
 @Entity
 @Table(name = "DetalleCompraModel")
 public class DetalleCompraModel {
 
+    //Varibles de la clase
+    //Id de la tabla 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idDetalleCompra", nullable = false, updatable = false, length = 10)
     private Integer idDetalleCompra;
 
+    //Relacion muchos a uno con la tabla (clase) CompraModel 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    //Ignora este variable (No se muestra)
     @JsonIgnore
     @JoinColumn(name = "compra", nullable = false)
     private CompraModel compra;
 
+    //Relacion muchos a uno con la tabla (clase) ProductoModel
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn( name = "producto" , nullable = false)
     private ProductoModel producto;
 
+    //Cantidad de producto comprado 
     @Column(name = "cantidad", nullable = false, length = 10)
     private Integer cantidad;
 
+    /**
+     * Constructor de la clase DetalleCompraModel
+     */
     public DetalleCompraModel() {
     }
+    
+    //Metodos Get y Set de las variables de la clase
 
     public Integer getIdDetalleCompra() {
         return idDetalleCompra;
