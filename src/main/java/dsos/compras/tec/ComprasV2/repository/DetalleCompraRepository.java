@@ -11,11 +11,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 /**
- *
+ * Interface repositorio detalle compra 
  * @author Oscar
  */
 public interface DetalleCompraRepository extends JpaRepository<DetalleCompraModel, Integer> {
-
+    /**
+     * Comsulta Select de la tabla DetalleCompraModel que tenga la compra especifia 
+     * @param compra Compra a buscar
+     * @return Collection con el resultado de la consulta 
+     */
     @Query("select s from DetalleCompraModel s where s.compra = ?1")
     Collection<DetalleCompraModel> findByModeloMarca(CompraModel compra);
 }

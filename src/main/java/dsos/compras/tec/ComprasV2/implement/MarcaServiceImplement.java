@@ -15,36 +15,49 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *
+ * Esta clase implementa Service para las marcas
  * @author Oscar
  */
 @Service
 public class MarcaServiceImplement implements MarcaService {
 
+    //Varibles de la clase
     private final Log LOG = LogFactory.getLog(MarcaService.class);
 
     @Autowired
     private MarcaRepository marcaRepository;
 
+    /**
+     * Constructor de la clase MarcaServiceImplement 
+     * @param marcaRepository Repositorio de marca
+     */
     public MarcaServiceImplement(MarcaRepository marcaRepository) {
         this.marcaRepository = marcaRepository;
-    }
+    }//Cierre del constructor
 
+    /**
+     * Método guarda una marca 
+     * @param marca Marca a guardar
+     */
     @Override
     public void createMarca(MarcaModel marca) {
         marcaRepository.save(marca);
     }
 
-    @Override
-    public void save(MarcaModel nuevaMarca) {
-        marcaRepository.save(nuevaMarca);
-    }
-
+    /**
+     * Método que borra una marca
+     * @param id Id marca a borrar 
+     */
     @Override
     public void delete(Integer id) {
         marcaRepository.deleteById(id);
     }
 
+    /**
+     * Método que actualiza una marca con el id dado
+     * @param marcaUpdate Marca con los datos a actualizar 
+     * @param id Id de la marca a actualziar 
+     */
     @Override
     public void update(MarcaModel marcaUpdate, Integer id) {
         MarcaModel marcaModel = marcaRepository.findById(id)
@@ -53,20 +66,41 @@ public class MarcaServiceImplement implements MarcaService {
         marcaRepository.save(marcaModel);
     }
 
+    /**
+     * 
+     * @param id
+     * @return 
+     */
     @Override
     public Optional<MarcaModel> getById(Integer id) {
         return marcaRepository.findById(id);
     }
     
+    /**
+     * Método que obtiene una marca con un nombre dado 
+     * @param nombre Nombre de la marca a buscar
+     * @return Optional con el resultado de la busqueda 
+     */
     @Override
     public Optional<MarcaModel> getByNombre(String nombre) {
         return marcaRepository.findByNombreMarca(nombre);
     }
 
+    /**
+     * Método obtiene todas las marcas
+     * @return List con todas las marcas 
+     */
     @Override
     public List<MarcaModel> getAll() {
         return marcaRepository.findAll();
     }
     
-    
+    /**
+     * Método guarda una nueva marca 
+     * @param nuevaMarca 
+     */
+    @Override
+    public void save(MarcaModel nuevaMarca) {
+        marcaRepository.save(nuevaMarca);
+    }
 }
